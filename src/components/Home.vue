@@ -26,7 +26,7 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="/users">
               <i class="el-icon-menu"></i>
               用户列表
             </el-menu-item>
@@ -47,7 +47,9 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view/>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -55,18 +57,17 @@
 <script>
 export default {
   methods: {
-    logout() {
-      this.$confirm('您确定要退出本系统吗?', '温馨提示', {
-        type: 'warning'
-      })
-        .then(() => {
-          localStorage.removeItem('token')
-          this.$router.push('/login')
-          this.$message.success('退出系统成功')
+    async logout() {
+      try {
+        await this.$confirm('您确定要退出本系统吗?', '温馨提示', {
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message.info('取消退出')
-        })
+        localStorage.removeItem('token')
+        this.$router.push('/login')
+        this.$message.success('退出系统成功')
+      } catch (e) {
+        this.$message.info('取消退出')
+      }
     }
   }
 }
